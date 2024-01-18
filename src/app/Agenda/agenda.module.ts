@@ -6,6 +6,7 @@ import { AgendaCardComponent } from './Components/agenda-card/agenda-card.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgendaRoutingModule } from './agenda-routing.module';
 import { AddContactPageComponent } from './Pages/add-contact-page/add-contact-page.component';
+import { EditContactComponent } from './Components/edit-contact/edit-contact.component';
 
 
 
@@ -14,6 +15,7 @@ import { AddContactPageComponent } from './Pages/add-contact-page/add-contact-pa
     AgendaPageComponent,
     AgendaCardComponent,
     AddContactPageComponent,
+    EditContactComponent,
   ],
   imports: [
     CommonModule,

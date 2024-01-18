@@ -1,20 +1,23 @@
-<div *ngFor="let contact of contacts" class="card m-4" style="width: 18rem;">
+<div class="row">
+  <div *ngFor="let contact of contacts" class="card m-4 col-3" >
 
-  <div class="card-body">
-    <h5 class="card-title">{{contact.name}} {{contact.lastName}}</h5>
-    <p class="card-text"> Teléfono/s: <div *ngFor="let phone of contact.phones">{{phone.number}}</div>
+    <div class="card-body">
+      <h5 class="card-title">{{contact.name}} {{contact.lastName}}</h5>
+      <p class="card-text"> Teléfono/s: <div *ngFor="let phone of contact.phones">{{phone.number}}</div>
 
-  </div>
+    </div>
 
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Dirreción: {{contact.direction}}</li>
-    <li class="list-group-item">Correo/s: <div *ngFor="let email of contact.emails">{{email.emailContact}}</div></li>
-    <li class="list-group-item">Cédula: {{contact.nationalId}}</li>
-  </ul>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Dirreción: {{contact.direction}}</li>
+      <li class="list-group-item">Correo/s: <div *ngFor="let email of contact.emails">{{email.emailContact}}</div></li>
+      <li class="list-group-item">Cédula: {{contact.nationalId}}</li>
+    </ul>
 
-  <div class="card-body">
-    <a href="#" class="card-link">Editar</a>
-    <a href="#" class="card-link">Borrar</a>
+    <div class="card-body">
+      <a [routerLink]="['edit', contact.id]" class="card-link">Editar</a>
+      <a [routerLink]="['deleteContact', contact.id]" class="card-link">Borrar</a>
+    </div>
+
   </div>
 
 </div>

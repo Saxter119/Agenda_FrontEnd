@@ -93,7 +93,7 @@ export class AddContactPageComponent implements OnInit {
     //   ]
     // }
 
-    const contact: Contact = {
+    const contact = {
       name: this.contactFormGroup.value.name!,
       lastName: this.contactFormGroup.value.lastName!,
       nationalId: this.contactFormGroup.value.nationalId!,
