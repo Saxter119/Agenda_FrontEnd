@@ -1,0 +1,41 @@
+<form [formGroup]="contactFormGroup" class="container">
+
+  <div class="row mb-4">
+
+    <label class="form-label" for="name">First Name </label>
+    <input class="form-control" type="text" formControlName="name">
+
+
+    <label class="form-label" for="lastName">Last Name </label>
+    <input class="form-control" type="text" formControlName="lastName">
+
+
+    <div class="col-6" formArrayName="phones">
+      <div *ngFor="let phone of phones.controls; let i = index" formGroupName="i" >
+      <label class="form-label" for="phone">Phone number </label>
+      <input class="form-control" type="text" formControlName="number">
+      <button class="btn btn-primary" (click)="addPhoneFormGroup()">Add</button>
+      <button class="btn btn-danger" (click)="removePhoneFormGroup(i)">Remove</button>
+    </div>
+    </div>
+
+    <div class="col-6" formArrayName="emails">
+      <div class="" *ngFor="let email of emails.controls; let i = index" [formGroupName]="i">
+        <label class="form-label" for="email">Email </label>
+        <input class="form-control" type="text" formControlName="emailContact">
+        <button class="btn btn-primary" (click)="addEmailFormGroup()">Add</button>
+        <button class="btn btn-danger m-3" (click)="removeEmailFormGroup(i)">Remove</button>
+      </div>
+    </div>
+
+    <label class="form-label" for="nationalId">Identification </label>
+    <input class="form-control" type="text" formControlName="nationalId">
+
+    <label class="form-label" for="direction">Direction </label>
+    <input class="form-control" type="text" formControlName="direction">
+
+  </div>
+
+  <button class="btn btn-primary" type="submit" (click)="createContact()">Save contact</button>
+
+</form>

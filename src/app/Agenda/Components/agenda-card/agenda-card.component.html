@@ -1,0 +1,20 @@
+<div *ngFor="let contact of contacts" class="card m-4" style="width: 18rem;">
+
+  <div class="card-body">
+    <h5 class="card-title">{{contact.name}} {{contact.lastName}}</h5>
+    <p class="card-text"> Teléfono/s: <div *ngFor="let phone of contact.phones">{{phone.number}}</div>
+
+  </div>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Dirreción: {{contact.direction}}</li>
+    <li class="list-group-item">Correo/s: <div *ngFor="let email of contact.emails">{{email.emailContact}}</div></li>
+    <li class="list-group-item">Cédula: {{contact.nationalId}}</li>
+  </ul>
+
+  <div class="card-body">
+    <a href="#" class="card-link">Editar</a>
+    <a href="#" class="card-link">Borrar</a>
+  </div>
+
+</div>
