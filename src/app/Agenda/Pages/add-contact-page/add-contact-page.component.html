@@ -2,40 +2,47 @@
 
   <div class="row mb-4">
 
-    <label class="form-label" for="name">First Name </label>
+    <label class="form-label" for="name">Nombre </label>
     <input class="form-control" type="text" formControlName="name">
+    <div *ngIf="!contactFormGroup.get('name')?.valid && contactFormGroup.get('name')?.touched" class="text-danger">
+      El contacto debe tener un nombre.
+    </div>
 
 
-    <label class="form-label" for="lastName">Last Name </label>
+    <label class="form-label" for="lastName">Apellido </label>
     <input class="form-control" type="text" formControlName="lastName">
-
 
     <div class="col-6" formArrayName="phones">
       <div *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i" >
-      <label class="form-label" for="phone">Phone number </label>
+      <label class="form-label" for="phone">Teléfono </label>
       <input class="form-control" type="text" formControlName="number">
-      <button class="btn btn-primary" (click)="addPhoneFormGroup()">Add</button>
-      <button class="btn btn-danger" (click)="removePhoneFormGroup(i)">Remove</button>
+      <button class="btn btn-danger m-3" (click)="removePhoneFormGroup(i)">Remove</button>
+      <div class="text-danger" *ngIf="phone.invalid && phone.touched">Introduce un número válido</div>
     </div>
+    <button class="btn btn-primary" (click)="addPhoneFormGroup()">Add</button>
     </div>
 
     <div class="col-6" formArrayName="emails">
       <div class="" *ngFor="let email of emails.controls; let i = index" [formGroupName]="i">
         <label class="form-label" for="email">Email </label>
         <input class="form-control" type="text" formControlName="emailContact">
-        <button class="btn btn-primary" (click)="addEmailFormGroup()">Add</button>
-        <button class="btn btn-danger m-3" (click)="removeEmailFormGroup(i)">Remove</button>
+        <button class="btn btn-danger m-3" (click)="removeEmailFormGroup(i)">Borrar</button>
+        <div class="text-danger" *ngIf="email.invalid && email.touched">Debes introducir un email válido</div>
       </div>
+      <button class="btn btn-primary" (click)="addEmailFormGroup()">Agregar</button>
     </div>
 
-    <label class="form-label" for="nationalId">Identification </label>
+    <label class="form-label" for="nationalId">Cédula </label>
     <input class="form-control" type="text" formControlName="nationalId">
 
-    <label class="form-label" for="direction">Direction </label>
+    <label class="form-label" for="direction">Dirección </label>
     <input class="form-control" type="text" formControlName="direction">
 
   </div>
 
-  <button class="btn btn-primary" type="submit" (click)="createContact()">Save contact</button>
 
 </form>
+
+<button class="btn btn-primary m-2" type="submit" (click)="createContact()">Guardar Contacto</button>
+
+<button class="btn btn-secondary" routerLink="/">Volver</button>

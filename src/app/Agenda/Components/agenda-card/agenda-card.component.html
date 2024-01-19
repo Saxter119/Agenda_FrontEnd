@@ -14,8 +14,9 @@
     </ul>
 
     <div class="card-body">
-      <a [routerLink]="['edit', contact.id]" class="card-link">Editar</a>
-      <a [routerLink]="['deleteContact', contact.id]" class="card-link">Borrar</a>
+        <a [routerLink]="['edit', contact.id]" class="card-link btn btn-primary"><i class="fa-solid fa-pen"></i> Editar</a>
+
+      <a (click)="removeContact(contact.id)" class="card-link btn btn-danger"><i class="fa-solid fa-trash"></i> Borrar</a>
     </div>
 
   </div>

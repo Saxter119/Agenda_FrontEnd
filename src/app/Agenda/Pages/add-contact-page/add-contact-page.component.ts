@@ -1,8 +1,10 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AgendaService } from '../../Services/agenda.service';
 import { Contact } from '../../Interfaces/Contact.interface';
 import { filter } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-contact-page',
@@ -11,8 +13,10 @@ import { filter } from 'rxjs';
 })
 export class AddContactPageComponent implements OnInit {
 
-  constructor(private _agendaService: AgendaService,
-    private fb: FormBuilder) {
+  constructor(
+    private _agendaService: AgendaService,
+    private fb: FormBuilder,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -20,15 +24,15 @@ export class AddContactPageComponent implements OnInit {
   }
 
   public contactFormGroup = this.fb.group({
-    name: new FormControl('', Validators.nullValidator),
-    lastName: new FormControl('', Validators.nullValidator),
+    name: new FormControl('', Validators.required),
+    lastName: new FormControl(''),
     nationalId: new FormControl(''),
     direction: new FormControl(''),
     phones: new FormArray([this.createPhoneFormGroup()]),
     emails: new FormArray([this.createEmailFormGroup()])
   })
 
-  //Methods for form array emails
+  /////////////////////////////Methods for form array emails
 
   public addEmailFormGroup() {
     this.emails.push(this.createEmailFormGroup())
@@ -42,7 +46,7 @@ export class AddContactPageComponent implements OnInit {
 
   private createEmailFormGroup(): FormGroup {
     return new FormGroup({
-      emailContact: new FormControl('', [Validators.email, Validators.requiredTrue]),
+      emailContact: new FormControl('', [Validators.email, Validators.required]),
     })
   }
 
@@ -50,7 +54,9 @@ export class AddContactPageComponent implements OnInit {
     return this.contactFormGroup.controls["emails"] as FormArray;
   }
 
-  //Methods for form array phones
+
+
+  //////////////////////////////////Methods for form array phones
 
   get phones(): FormArray {
     return this.contactFormGroup.controls["phones"] as FormArray;
@@ -68,7 +74,7 @@ export class AddContactPageComponent implements OnInit {
 
   private createPhoneFormGroup(): FormGroup {
     return new FormGroup({
-      number: new FormControl('', [Validators.nullValidator, Validators.requiredTrue]),
+      number: new FormControl('', [Validators.required, Validators.maxLength(15)]),
     })
   }
 
@@ -76,22 +82,19 @@ export class AddContactPageComponent implements OnInit {
 
   createContact() {
 
-    // {
-    //   "name": "string",
-    //   "lastName": "string",
-    //   "nationalId": "string",
-    //   "direction": "string",
-    //   "emails": [
-    //     {
-    //       "emailContact": "string"
-    //     }
-    //   ],
-    //   "phones": [
-    //     {
-    //       "number": "string"
-    //     }
-    //   ]
-    // }
+
+    if (this.contactFormGroup.invalid) {
+
+      Swal.fire({
+        title: 'Contacto incompleto',
+        text: 'El contacto debe tener al menos un nombre y un numero o correo válido.',
+        icon: 'error',
+      }
+      )
+
+      return
+    }
+
 
     const contact = {
       name: this.contactFormGroup.value.name!,
@@ -102,16 +105,21 @@ export class AddContactPageComponent implements OnInit {
       phones: this.contactFormGroup.value.phones!
     }
 
+
     console.log(contact);
 
-    this._agendaService.post(contact).subscribe();
+    this._agendaService.post(contact).subscribe(res=> {
+      this.router.navigate(['./'])
+    });
+
+
+    Swal.fire('Contacto creado', `El contacto ${contact.name} ha sido creado`, 'success')
+
+    this.router.navigate(['./'])
 
 
     console.log("enviado");
 
-    return
-
-    //this._agendaService.post()
   }
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact, Email, Phone } from '../../Interfaces/Contact.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AgendaService } from '../../Services/agenda.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -18,6 +18,7 @@ export class EditContactComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private agendaService: AgendaService,
+    private router: Router
   ) {
     this.contactId = this.activatedRoute.snapshot.params['id']
   }
@@ -38,7 +39,7 @@ export class EditContactComponent implements OnInit {
 
 
     this.editContactForm = new FormGroup({
-      name: new FormControl(name),
+      name: new FormControl(name, [Validators.required]),
       lastName: new FormControl(lastName),
       nationalId: new FormControl(nationalId),
       direction: new FormControl(direction),
@@ -65,7 +66,7 @@ export class EditContactComponent implements OnInit {
     phones.forEach(phone => {
       const formGroup = new FormGroup({
         id: new FormControl(phone.id),
-        number: new FormControl(phone.number, [Validators.nullValidator, Validators.requiredTrue]),
+        number: new FormControl(phone.number, [Validators.required, Validators.maxLength(15)]),
       })
       phonesFormArray.push(formGroup)
     });
@@ -78,7 +79,7 @@ export class EditContactComponent implements OnInit {
     emails.forEach(email => {
       const formGroup = new FormGroup({
         id: new FormControl(email.id),
-        emailContact: new FormControl(email.emailContact, [Validators.nullValidator, Validators.requiredTrue]),
+        emailContact: new FormControl(email.emailContact, [Validators.required, Validators.email]),
       })
       emailsFormArray.push(formGroup)
     });
@@ -86,10 +87,9 @@ export class EditContactComponent implements OnInit {
     return emailsFormArray;
   }
 
-
   public addEmailFormGroup() {
     this.emails.push(new FormGroup({
-      emailContact: new FormControl('', [Validators.nullValidator, Validators.requiredTrue])
+      emailContact: new FormControl('', [Validators.required, Validators.email])
     }))
   }
 
@@ -106,7 +106,7 @@ export class EditContactComponent implements OnInit {
 
   public addPhoneFormGroup() {
     this.phones.push(new FormGroup({
-      number: new FormControl('', [Validators.nullValidator, Validators.requiredTrue])
+      number: new FormControl('', [Validators.maxLength(15), Validators.required])
     }))
   }
 
@@ -121,20 +121,25 @@ export class EditContactComponent implements OnInit {
     }
   }
 
+
   editContact() {
+
+    if (!this.editContactForm.valid) {
+      this.editContactForm.markAllAsTouched();
+      return
+    }
+
     const body = {
       id: this.contactId,
       ...this.editContactForm.value
     }
 
     this.agendaService.update(body).subscribe(resp => {
-      console.log(resp);
-
+      this.router.navigate(['./'])
     })
+
   }
 
-  removeContact(id: number) {
-    this.agendaService.delete(id)
-  }
+
 
 }
